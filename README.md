@@ -35,7 +35,7 @@ Try to modify the main function and add a loop to print the output `fibo_counter
 Try to guess what value of $n$ makes `fibo_counter(n, 2)` return a value over 1 million. What about 1 billion? As a hint, $n=18$ is when it passes $1000$. You may modify the main function to calculate these numbers and compare your guess with the actual answers. 
 
 #### Exercise 3:
-For $n = 30$, take a look at the output of `fibo_counter(n, k)` for $k \in \{3,2,1,0\}.$ What do you think of the output for $k=0$, compared to $k=1$ or $k=2$? Does it make sense given the trend? Why or why not?
+For $n = 30$, take a look at the output of `fibo_counter(n, k)` for $k \in \\{3,2,1,0\\}.$ What do you think of the output for $k=0$, compared to $k=1$ or $k=2$? Does it make sense given the trend? Why or why not?
 
 ### Recursion + Memoization
 
@@ -48,7 +48,7 @@ This can be seen in the recursive implementation as well, but the key idea is th
 This is accomplished by memoization, essentially keeping a record so that redundant computations are avoided.
 
 #### Exercise 4: 
-In `fibo.c`, add a new function with the signature `long fibo_memo(int n);`. Implement the function and print out the results for $n \in \{60, 75, 100\}$. 
+In `fibo.c`, add a new function with the signature `long fibo_memo(int n);`. Implement the function and print out the results for $n \in \\{60, 75, 100\\}$. 
 
 ## Part 2: Connection with Graph and networks.
 In part 3, you will learn a little about text wrapping, which uses an implementation of the DAG shortest path algorithm using dynamic programming. Before we get there, however, lets turn our attention to another well known example of Dynamic Programming: the **Bellman-Ford** Algorithm.
