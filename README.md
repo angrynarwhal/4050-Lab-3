@@ -43,12 +43,12 @@ Recall the discussion around the recurrence relation of the fibonacci sequence f
 
 $$ \text{F}_n = \text{F}_{n-1} + \text{F}_{n-2}.\ \ \text{F}_1 = \text{F}_2 = 1$$
 
-This can be seen in the recursive implementation as well, but the key idea is that we can see that $\text{F}_{n-2}$ being computed more than once: once for $\text{F}_n$ and once for $\text{F}_{n-1}$. With this knowledge, and the power of Dynamic Programming, we can convert this exponential time algorithm into a linear time algorithm (or polynomial, depending how deep you want to go into the rabbit hole).
+This can be seen in the recursive implementation as well, but the key idea is that we can see that $F_{n-2}$ being computed more than once: once for $F_n$ and once for $F_{n-1}$. With this knowledge, and the power of Dynamic Programming, we can convert this exponential time algorithm into a linear time algorithm (or polynomial, depending how deep you want to go into the rabbit hole).
 
 This is accomplished by memoization, essentially keeping a record so that redundant computations are avoided.
 
 #### Exercise 4: 
-In `fibo.c`, add a new function with the signature `long fibo_memo(int n);`. Implement the function and print out the results for $n \in \\{60, 75, 100\\}$. 
+In `fibo.c`, add a new function with the signature `long fibo_memo(int n);`. Implement the function and print out the results for $n \in \\{60, 75, 100\\}$. Attach a screenshot of the code output below.
 
 ## Part 2: Connection with Graph and networks.
 In part 3, you will learn a little about text wrapping, which uses an implementation of the DAG shortest path algorithm using dynamic programming. Before we get there, however, lets turn our attention to another well known example of Dynamic Programming: the **Bellman-Ford** Algorithm.
