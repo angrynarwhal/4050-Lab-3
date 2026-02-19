@@ -86,7 +86,7 @@ To simplify the problem, the concept of a paragraph, words and spaces have been 
 
 - A box is categorized as a black box with some content inside of it, be it a character, a symbol, a mathematical formula. We do not care to see what's inside it, just that it has a specific width that cannot change. A box $x_i$ will have a fixed width $w_i$. For KP, a box could contain anything from characters to words, but for the purposes of our lab it will be defined as any word in the english language.
 
-- A Glue refers to whitespaces of variable length. The technical details are in the paper, but the gist is that a space has a standard width, a stretch and a shrink factor... Any given space would be the standard space to begin with, but if the algorithm feels that by shrinking the standard width of all spaces within a line (up to a limit) would help optimize the aesthetic of the text-wrapping, it would be done.
+- A Glue refers to whitespaces of variable length. The technical details are in the paper, but the gist is that a space has a standard width, a stretch and a shrink factor... Any given space would be the standard space to begin with, but if the algorithm feels that shrinking the standard width of all spaces within a line (up to a limit) would help optimize the aesthetic of the text-wrapping, it would be done.
 
 - A penalty refers to a marker of how good or bad a decision it will be if a line break is inserted after that spot. this is not printed and is solely inserted for convenience of the algorithm.
 
@@ -96,28 +96,28 @@ We will also look at the so called "badness score" which details how good or bad
 
 The above is only a gist of the amount of considerations that have gone into this topic, and I haven't even mentioned the long conversations about hyphenation choices and the nuances for solving that problem.
 
-We will simplify the algorithm more still to distill it into a purely dynamic exercise. You may read the description below and implement in any language of your choice (limit it to those mentioned by goggins in the first lecture though). Once done, there are a couple of short questions to answer as Exercise 8.
+We will simplify the algorithm more still to distill it into a purely dynamic exercise. You may read the description below and write your implementation in any language of your choice (limit it to those mentioned by Goggins in the first lecture though). Once done, there are a couple of short questions to answer as Exercise 8.
 
 Given a string S, you will first need to tokenize the string into n words. These will be your blocks. The spaces (glue) will be a fixed size of 1, while the blocks' size is the number of characters they contain. Doing this removes much of the utility of the program, but it still maintains the key characteristic that allows us to apply dynamic programming to it. Namely, if we want to find the optimum breakpoints, then the naive brute force solution is to try every possible breakpoint, which gives us an exponential solution.
 
-We can of course solve this using dynamic programming, which enables a polynomial time solution. The recurrence relation for the problem is given below. $i$ is the start of the paragraph (0, 1... n), and *opt(i)* is the minimized badness score for a string starting at $i$ and ending at $n$ with the best breakpoints chosen. 
+We can of course solve this using dynamic programming, which can be done in polynomial time. The recurrence relation for the problem is given below. $i$ is the start of the paragraph (0, 1... n), and *opt(i)* is the minimized badness score for a suffix string starting at $i$ and ending at $n$ with the best breakpoints chosen. 
 
 ![alt text](/images/recurrence_latex.png)
 
-$OPT(0)$ will be the solution we are looking for, the minimized badness that gives the best line breaks. **$OPT(n)$ on the other hand will be 0, the base case for the recursion.**
+$OPT(0)$ will be the solution we are looking for, the minimized badness for the "suffix" starting at the beginning (in other words, the whole string). **$OPT(n)$ on the other hand will be 0, the base case for the recursion.**
 
-Badness_score can be calculated as follows: 
+#### Badness Score Calculation: 
 
-Let $L$ represent the length of a line (the target). $length(i, j)$ is the total length of the substring from i to j, including the necessary blank spaces in between them. 
+Let $L$ represent the width of the page (the target). $length(i, j)$ is the total length of the substring from i to j, including the necessary blank spaces in between them. 
 
-Then $Badness(i,j)$ is as follows
+Then $Badness(i,j)$ is defined as follows:
 
 ![alt text](/images/badness_latex.png)
 
-Use the recurrence relationship and memoization as appropriate to generate a recursive algorithm to solve the line-breaking problem. At the end, you get $opt(0)$ which is going to be the minimized "badness score". With this, you have converted the exponential algorithm to a polynomial one.
+Use the recurrence relationship and memoization as appropriate to generate a recursive algorithm to solve the line-breaking problem. At the end, you get $opt(0)$ which is going to be the minimized "badness score" for the whole paragraph. With this, you have converted the exponential algorithm to a polynomial one.
 
 Exercise 8: 
-- What is the Big O of the final dynamic programming solution?
+- What is the Big O of the final dynamic programming solution? Include a brief explaination.
 - Your algorithm currently returns the minimized badness score and not the line breaks themselves. How would you modify your algorithm (or use a secondary data structure) to print the actual text formatted with the optimal line breaks?
 
 ## Conclusion
