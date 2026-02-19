@@ -100,7 +100,7 @@ Given a string S, you will first need to tokenize the string into n words. These
 
 We can of course solve this using dynamic programming, which enables a polynomial time solution. The recurrence relation for the problem is given below. $i$ is the start of the paragraph (0, 1... n), and *opt(i)* is the minimized badness score for a string starting at $i$ and ending at $n$ with the best breakpoints chosen. 
 
-![alt text](/images/recurrence_latex.png.png)
+![alt text](/images/recurrence_latex.png)
 
 $OPT(0)$ will be the solution we are looking for, the minimized badness that gives the best line breaks. **$OPT(n)$ on the other hand will be 0, the base case for the recursion.**
 
@@ -110,7 +110,7 @@ Let $L$ represent the length of a line (the target). $length(i, j)$ is the total
 
 Then $Badness(i,j)$ is as follows
 
-![alt text](/images/badness_latex.png.png)
+![alt text](/images/badness_latex.png)
 
 Use the recurrence relationship and memoization as appropriate to generate a recursive algorithm to solve the line-breaking problem. At the end, you get $opt(0)$ which is going to be the minimized "badness score". With this, you have converted the exponential algorithm to a polynomial one.
 
