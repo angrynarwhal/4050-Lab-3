@@ -43,15 +43,15 @@ Recall the discussion around the recurrence relation of the fibonacci sequence f
 
 $$ \text{F}_n = \text{F}_{n-1} + \text{F}_{n-2}.\ \ \text{F}_1 = \text{F}_2 = 1$$
 
-This can be seen in the recursive implementation as well, but the key idea is that we can see that $F_{n-2}$ being computed more than once: once for $F_n$ and once for $F_{n-1}$. With this knowledge, and the power of Dynamic Programming, we can convert this exponential time algorithm into a linear time algorithm (or polynomial, depending how deep you want to go into the rabbit hole).
+This can be seen in the recursive implementation as well, but the key idea is that we can see that $F_{n-2}$ being computed more than once: once for $F_n$ and once for $F_{n-1}$. With this knowledge, and the power of Dynamic Programming, we can convert this exponential time algorithm into a linear time *recursive* algorithm (or polynomial, depending how deep you want to go into the rabbit hole).
 
 This is accomplished by memoization, essentially keeping a record so that redundant computations are avoided.
 
 #### Exercise 4: 
-In `fibo.c`, add a new function with the signature `long fibo_memo(int n);`. Implement the function and print out the results for $n \in \\{60, 75, 100\\}$. Attach a screenshot of the code output below.
+In `fibo.c`, add a new *recursive* function with the signature `long fibo_memo(int n);`. Implement the function using memoization and print out the results for $n \in \\{60, 75, 100\\}$. Attach a screenshot of the code output below.
 
 ## Part 2: Connection with Graph and networks.
-In part 3, you will learn a little about text wrapping, which uses an implementation of the DAG shortest path algorithm using dynamic programming. Before we get there, however, lets turn our attention to another well known example of Dynamic Programming: the **Bellman-Ford** Algorithm.
+In the next part, you will learn a little about text wrapping, which uses an implementation of the DAG shortest path algorithm using dynamic programming. Before we get there, however, lets turn our attention to another well known example of Dynamic Programming: the **Bellman-Ford** Algorithm.
 
 
 #### Exercise 5:
@@ -66,7 +66,7 @@ The Bellman-Ford algorithm finds shortest path from vertex $s$ to vertex $v$. Le
 
 The final part of this lab is designed as a simplified walk through of the Knuth-Plass paper from 1981 called *Breaking Paragraphs into Lines.* It discusses the line breaking algorithm as it was implemented in Tex, and explains how a problem that initially seems very simple requires a very nuanced solution.
 
-You may find the original paper [here](https://gwern.net/doc/design/typography/tex/1981-knuth.pdf), though I will attempt to exaplain most of relevant parts in order to implement the simplified version below.
+You may find the original paper [here](https://gwern.net/doc/design/typography/tex/1981-knuth.pdf), though I will attempt to explain most of relevant parts in order to implement the simplified version below.
 
 
 We will study line breaking with the goal of *justification*, a fancy typesetting word that simply states how the words are printed and associated with the margins. Figure 1 shows a side-by-side of left justified (Aligned Left) and justified text. Notice that in left-justified, the right side has jagged edges, but the words are all evenly spaced out; whereas in the justified side, there are no jagged edges on the right side, but this is accomplished by using variable length spaces between words (i.e. line 1 and 2). 
@@ -80,49 +80,48 @@ We will use this interplay between space sizes and word widths in order to study
 
 ### Required Reading 
 
-TODO: Finish this section
-
 To simplify the problem, the concept of a paragraph, words and spaces have been presented in a slightly more mathematical fashion. A paragraph *P* may be represented as a string of *items* $(x_1, x_2,\dots x_n).$ In such a representation, each $x_i$ may be a ***box*** specification, a ***glue*** specification, or a ***penalty*** specification.
 
 - A box is categorized as a black box with some content inside of it, be it a character, a symbol, a mathematical formula. We do not care to see what's inside it, just that it has a specific width that cannot change. A box $x_i$ will have a fixed width $w_i$. For KP, a box could contain anything from characters to words, but for the purposes of our lab it will be defined as any word in the english language.
 
-- A Glue refers to whitespaces of variable length :TODO: finish explaination
+- A Glue refers to whitespaces of variable length. The technical details are in the paper, but the gist is that a space has a standard width, a stretch and a shrink factor... Any given space would be the standard space to begin with, but if the algorithm feels that by shrinking the standard width of all spaces within a line (up to a limit) would help optimize the aesthetic of the text-wrapping, it would be done.
 
 - A penalty refers to a marker of how good or bad a decision it will be if a line break is inserted after that spot. this is not printed and is solely inserted for convenience of the algorithm.
 
-We will also look at the so called "badness score" which details how good or bad a breakpoint is in conjunction with the penalty score. 
+We will also look at the so called "badness score" which details how good or bad a breakpoint is in conjunction with the penalty score. This score is used in the minimization problem and where dynamic programming comes to save the day.
 
 #### Exercise 7
-Part one of the algorithm involves a polynomial algorithm that iterates through the paragraph and creates our list of items $(x_1, x_2,\dots, x_n)$ along with all the necessary *badness scores* and legal breakpoints.
 
-TODO: Provide more implementation guidance here. 
+The above is only a gist of the amount of considerations that have gone into this topic, and I haven't even mentioned the long conversations about hyphenation choices and the nuances for solving that problem.
 
-Use the provided c file which contains much of the boiler plate code to complete this part of the lab according to specification.
+We will simplify the algorithm more still to distill it into a purely dynamic exercise. You may read the description below and implement in any language of your choice (limit it to those mentioned by goggins in the first lecture though). Once done, there are a couple of short questions to answer as Exercise 8.
 
-#### Exercise 8
+Given a string S, you will first need to tokenize the string into n words. These will be your blocks. The spaces (glue) will be a fixed size of 1, while the blocks' size is the number of characters they contain. Doing this removes the much of the utility of the program, but it still maintains the key characteristic that allows us to apply dynamic programming to it. Namely, if we want to find the optimum breakpoints, then the naive solution is to try every possible breakpoint, which gives us an exponential solution.
 
-TODO: May remove this part if it feels too long.
+We can of course solve this using dynamic programming, which enables a polynomial time solution. The recurrence relation for the problem is given below. $i$ is the start of the paragraph (0, 1... n), and *opt(i)* is the minimized badness score for a string starting at $i$ and ending at $n$ with the best breakpoints chosen. 
 
-Now that you have your paragraph in the proper format, you should be able to convert it into a graph so that the Bellman-Ford algorithm from Part 2 can do its job. It should find the shortest path and output it, which will represent the starting node (the first word), and then every consecutive node represents the optimum line break, minimizing the badness of each line. This shortest path can then be used to finally typeset and print the paragraph.
+![alt text](/images/recurrence_latex.png.png)
 
+$OPT(0)$ will be the solution we are looking for, the minimized badness that gives the best line breaks. **$OPT(n)$ on the other hand will be 0, the base case for the recursion.**
 
-#### Exercise 9
+Badness_score can be calculated as follows: 
 
-We've solved the problem using BF algorithm, but have we done it as efficiently as possible? We've used dynamic programming so it must be the case right? 
+Let $L$ represent the length of a line (the target). $length(i, j)$ is the total length of the substring from i to j, including the necessary blank spaces in between them. 
 
-In actuallity, the Bellman-Ford algorithm is too strong of a hammer to use on this problem, which is actually a DAG (Directed Acyclic Graph) Shortest-Path problem. Bellman-Ford will run in $O(n^2)$ time. Given that its a DAG, we might consider using Dijkstra, which may run in $O(E+V\text{log}(V))$. However, using dynamic programming, this can be solved in linear time, which is the final part of this lab.
+Then $Badness(i,j)$ is as follows
 
-Use the given boilerplate code as a starting point and implement the `knuth_plass-sp` function using dynamic programming. Print out the graph using the given function and attach a screenshot below. 
+![alt text](/images/badness_latex.png.png)
 
+Use the recurrence relationship and memoization as appropriate to generate a recursive algorithm to solve the line-breaking problem. At the end, you get $opt(0)$ which is going to be the minimized "badness score". With this, you have converted the exponential algorithm to a polynomial one.
+
+Exercise 8: 
+- What is the Big O of the final dynamic programming solution?
+- Your algorithm currently returns the minimized badness score and not the line breaks themselves. How would you modify your algorithm (or use a secondary data structure) to print the actual text formatted with the optimal line breaks?
 
 ## Conclusion
 
 That concludes the lab. 
 
 Some questions here. Food for thought.
-
-- In your own words, why is Bellman-Ford not the best algorithm to use for this case-study and what allows the Knuth-Plass algorithm to be more efficient?
-
-- Instead of the shortest path, what would it look like if you wrote the algorithm to use the longest path instead? What about the left most path every time (imagining the graph as a top-down tree)?
 
 - What about greedy algorithms? Why did we not consider them? What would a greedy algorithm for this problem look like? What scenario of text-wrapping (as opposed to Tex) would greedy algorithms be more suited for?
