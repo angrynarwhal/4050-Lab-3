@@ -6,6 +6,8 @@
 
 The lab will help strenghthen your grasp of dynamic programming, reinforcing the motifs of recurrence relations, memoization, and graph algorithms through some simple introductory examples; this is followed by a robust implementation of the shortest path algorithm on a graph and an interesting usecase of Dynamic Programming in the real world: Text Wrapping.
 
+**Note: This lab will be more implementation focused, so you answers to the discussion questions can be brief.**
+
 <!-- 
     1. Prelude to Dynamic Programming
     2. Introduction to Knuth-Pluss
@@ -96,7 +98,7 @@ The above is only a gist of the amount of considerations that have gone into thi
 
 We will simplify the algorithm more still to distill it into a purely dynamic exercise. You may read the description below and implement in any language of your choice (limit it to those mentioned by goggins in the first lecture though). Once done, there are a couple of short questions to answer as Exercise 8.
 
-Given a string S, you will first need to tokenize the string into n words. These will be your blocks. The spaces (glue) will be a fixed size of 1, while the blocks' size is the number of characters they contain. Doing this removes the much of the utility of the program, but it still maintains the key characteristic that allows us to apply dynamic programming to it. Namely, if we want to find the optimum breakpoints, then the naive solution is to try every possible breakpoint, which gives us an exponential solution.
+Given a string S, you will first need to tokenize the string into n words. These will be your blocks. The spaces (glue) will be a fixed size of 1, while the blocks' size is the number of characters they contain. Doing this removes much of the utility of the program, but it still maintains the key characteristic that allows us to apply dynamic programming to it. Namely, if we want to find the optimum breakpoints, then the naive brute force solution is to try every possible breakpoint, which gives us an exponential solution.
 
 We can of course solve this using dynamic programming, which enables a polynomial time solution. The recurrence relation for the problem is given below. $i$ is the start of the paragraph (0, 1... n), and *opt(i)* is the minimized badness score for a string starting at $i$ and ending at $n$ with the best breakpoints chosen. 
 
