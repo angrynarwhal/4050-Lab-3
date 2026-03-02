@@ -28,6 +28,6 @@ int fibo(int n) {
 int global_k_counter = 0; // Global counter for fibo_counter function
 int fibo_counter(int n, int k) {
     if (n == k) return 1; // if k is encountered, add one to count and stop recursion.
-    if (n <= 1) return n;
+    if (n <= 1) return 0;
     return fibo_counter(n - 1, k) + fibo_counter(n - 2, k);
 }
